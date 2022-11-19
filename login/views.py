@@ -15,6 +15,6 @@ def login_view(request):
             print('asdasd', request.GET.get('next'))
             return HttpResponseRedirect(request.POST['redirect'])
         else:
-            return render(request, 'login/index.html', {'invalidCredentials': True})
+            return render(request, 'login/login.html', {'invalidCredentials': True})
 
-    return render(request, 'login/index.html', {'redirect': redirect})
+    return render(request, 'login/login.html', {'redirect': redirect})
