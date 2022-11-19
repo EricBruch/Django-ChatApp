@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from .models import Message, Chat
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='/login/')
 def index(request):
-    # print(request)
     if request.method == 'POST':
         print('reveided data ' + request.POST['message'])
         myChat = Chat.objects.get(id=2)
