@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% block content %}
+
+<h1>Register</h1>
+
+<div>
+  <form action="/register/" method="post">
+    {% csrf_token %}
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input
+            class="mdl-textfield__input"
+            name="username"
+            type="text"
+            id="username"
+          />
+          <label class="mdl-textfield__label" for="username">Username</label>
+        </div>
+    </div>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input
+            class="mdl-textfield__input"
+            name="email"
+            type="text"
+            id="email"
+          />
+          <label class="mdl-textfield__label" for="email">E-Mail</label>
+        </div>
+    </div>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input
+            class="mdl-textfield__input"
+            name="password"
+            type="text"
+            id="password"
+          />
+          <label class="mdl-textfield__label" for="password">Password</label>
+        </div>
+    </div>
+    <div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input
+            class="mdl-textfield__input"
+            name="passwordRepeat"
+            type="text"
+            id="passwordRepeat"
+          />
+          <label class="mdl-textfield__label" for="passwordRepeat"
+            >Reapeat Password</label
+          >
+        </div>
+    </div>
+    <div>
+      <button
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+      >
+        Register User
+      </button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
