@@ -1,31 +1,74 @@
 {% extends "base.html" %} {% block content %}
 <!---->
-{% if request.user.is_authenticated %} {% for message in messages %}
-<div>
-  <span class="color-gray">[{{ message.created_at }}]:</span>
-  {{ message.author }}: <i>{{ message.text }}</i>
+{% if request.user.is_authenticated %}
+<!---->
+
+<div id="messageContainer">
+  {% for message in messages %}
+  <div>
+    <span class="color-gray">[{{ message.created_at }}]:</span>
+    {{ message.author }}: <i>{{ message.text }}</i>
+  </div>
+  {% endfor %}
 </div>
-{% endfor %}
 
 <script type="text/javascript">
+  const preliminaryAddText = (date, text) => {
+    messageContainer.innerHTML += `
+    <div id="deleteMessage">
+      <span class="color-gray">[${date}]:</span>
+      {{ request.user }}: <i class="color-gray">${text}</i>
+    </div>
+    `;
+  };
+
   const sendMessage = async () => {
     const fd = new FormData();
-    const token = '{{ csrf_token }}';
+    const token = "{{ csrf_token }}";
     fd.append("message", messageField.value);
     fd.append("csrfmiddlewaretoken", token);
+
     try {
-      await fetch("/chat/", {
+      return await fetch("/chat/", {
         method: "POST",
         body: fd,
       });
-      console.log("Success!!");
     } catch (e) {
       console.error("An error occured", e);
     }
   };
+
+  const saveMessage = async () => {
+    preliminaryAddText(messageField.value, getDateString(new Date()));
+    const response = await sendMessage();
+    document.getElementById("deleteMessage").remove();
+
+    const json = JSON.parse(await response.json());
+    console.log("json", json.fields.text);
+    addText(
+      getDateString(new Date(`${json.fields.created_at}`)),
+      json.fields.text
+    );
+  };
+
+  const addText = (date, text) => {
+    messageContainer.innerHTML += `
+    <div>
+      <span class="color-gray">[${date}]:</span>
+      {{ request.user }}: <i>${text}</i>
+    </div>
+    `;
+  };
+
+  const getDateString = (date) =>
+    new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      year: "numeric",
+      day: "numeric",
+    }).format(date);
 </script>
 
-<form onsubmit="sendMessage(); return false;" method="post">
+<form onsubmit="saveMessage(); return false;" method="post">
   {% csrf_token %}
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input
