@@ -6,22 +6,23 @@ from django.core import serializers
 
 
 @login_required(login_url='/login/')
-def index(request):
+def index(request, id=None):
     """This is a view to render the chat html.
-
-    Args:
-        request (_type_): _description_
-
-    Returns:
-        _type_: _description_
     """
+    myId = int(id) if id else 2
+    chatId = myId if myId > 2 and myId < 6 else 2
+    chat = Chat.objects.get(id=chatId)
+
     if request.method == 'POST':
-        myChat = Chat.objects.get(id=2)
         message = Message.objects.create(
-            text=request.POST['message'], chat=myChat, author=request.user, receiver=request.user
+            text=request.POST['message'], chat=chat, author=request.user, receiver=request.user
         )
         serialized_obj = serializers.serialize('json', [message])
         return JsonResponse(serialized_obj[1:-1], safe=False)
-    chatMessages = Message.objects.filter(chat__id=2)
-    return render(request, 'chat/index.html', {'messages': chatMessages})
 
+    chatMessages = Message.objects.filter(chat__id=chatId)
+    return render(request, 'chat/index.html', {
+        'messages': chatMessages,
+        'name': chat.name,
+        'created': chat.created_at
+    })

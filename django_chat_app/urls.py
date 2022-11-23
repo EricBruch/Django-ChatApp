@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('chat/', index),
+    path('chat/<id>/', index),
     path('login/', login_view),
     path('register/', register_view),
 ]

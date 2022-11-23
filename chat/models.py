@@ -6,6 +6,7 @@ from django.utils.timezone import now
 # Create your models here.
 class Chat(models.Model):
     created_at = models.DateField(default=now)
+    name = models.CharField(max_length=30)
 
 class Message(models.Model):
     text = models.CharField(max_length=500)

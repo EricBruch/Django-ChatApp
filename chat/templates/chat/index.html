@@ -3,6 +3,11 @@
 {% if request.user.is_authenticated %}
 <!---->
 
+<div>
+  <h2>{{ name }}</h2>
+  <h5>{{ created }}</h4>
+</div>
+
 <div id="messageContainer">
   {% for message in messages %}
   <div>
