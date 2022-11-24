@@ -3,19 +3,12 @@
 {% if request.user.is_authenticated %}
 <!---->
 
-<div>
-  <h2>{{ name }}</h2>
-  <h5>{{ created }}</h4>
-</div>
+{% load static %}
 
-<div id="messageContainer">
-  {% for message in messages %}
-  <div>
-    <span class="color-gray">[{{ message.created_at }}]:</span>
-    {{ message.author }}: <i>{{ message.text }}</i>
-  </div>
-  {% endfor %}
-</div>
+<!--
+  <script src="{% static 'js/shared.js' %}"></script>
+
+-->
 
 <script>
   const preliminaryAddText = (date, text) => {
@@ -43,19 +36,6 @@
     }
   };
 
-  const saveMessage = async () => {
-    preliminaryAddText(messageField.value, getDateString(new Date()));
-    const response = await sendMessage();
-    document.getElementById("deleteMessage").remove();
-
-    const json = JSON.parse(await response.json());
-    console.log("json", json.fields.text);
-    addText(
-      getDateString(new Date(`${json.fields.created_at}`)),
-      json.fields.text
-    );
-  };
-
   const addText = (date, text) => {
     messageContainer.innerHTML += `
     <div>
@@ -72,7 +52,39 @@
 
     return `${month}. ${day}, ${year}`;
   };
+
+  const getLoadSpinner = () =>
+    '<div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active" id="loadingSpinner"></div>';
+
+  const saveMessage = async () => {
+    loadingSpinner.classList.remove("hidden");
+    preliminaryAddText(messageField.value, getDateString(new Date()));
+    const response = await sendMessage();
+    document.getElementById("deleteMessage").remove();
+
+    const json = JSON.parse(await response.json());
+    console.log("json", json.fields.text);
+    addText(
+      getDateString(new Date(`${json.fields.created_at}`)),
+      json.fields.text
+    );
+    loadingSpinner.classList.add("hidden");
+  };
 </script>
+
+<div>
+  <h2>{{ name }}</h2>
+  <h4>{{ created }}</h4>
+</div>
+
+<div id="messageContainer">
+  {% for message in messages %}
+  <div>
+    <span class="color-gray">[{{ message.created_at }}]:</span>
+    {{ message.author }}: <i>{{ message.text }}</i>
+  </div>
+  {% endfor %}
+</div>
 
 <form onsubmit="saveMessage(); return false;" method="post">
   {% csrf_token %}
@@ -85,11 +97,21 @@
     />
     <label class="mdl-textfield__label" for="messageField">Text...</label>
   </div>
-  <button
-    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-  >
-    Send
-  </button>
+  <div class="d-flex">
+    <div>
+      <button
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+      >
+        Send
+      </button>
+    </div>
+    <div class="ml-16" id="loadingContainer">
+      <div
+        class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active hidden"
+        id="loadingSpinner"
+      ></div>
+    </div>
+  </div>
 </form>
 
 {% else %}
