@@ -1,37 +1,37 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
 <!---->
-{% if request.user.is_authenticated %}
-<!---->
-
-{% load static %}
+{% block content %} {% load static %}
 <script src="{% static 'js/index.js' %}"></script>
 
-<div>
-  <h2>{{ name }}</h2>
-  <h4>{{ created }}</h4>
-</div>
-
-<div id="messageContainer">
-  {% for message in messages %}
+<div class="d-flex align-items-center flex-direction-column">
   <div>
-    <span class="color-gray">[{{ message.created_at }}]:</span>
-    {{ message.author }}: <i>{{ message.text }}</i>
+    <h2>{{ name }}</h2>
+    <h4>{{ created }}</h4>
   </div>
-  {% endfor %}
-</div>
 
-<form onsubmit="saveMessage(); return false;" method="post">
-  <fieldset id="fieldset">
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input
-        class="mdl-textfield__input"
-        name="message"
-        type="text"
-        id="messageField"
-      />
-      <label class="mdl-textfield__label" for="messageField">Text...</label>
+  <div id="messageContainer">
+    {% for message in messages %}
+    <div>
+      <span class="color-gray">[{{ message.created_at }}]:</span>
+      {{ message.author }}: <i>{{ message.text }}</i>
     </div>
-    <div class="d-flex">
+    {% endfor %}
+  </div>
+
+  <form onsubmit="saveMessage(); return false;" method="post">
+    <fieldset
+      id="fieldset"
+      class="d-flex justify-content-center align-items-center flex-direction-column"
+    >
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input
+          class="mdl-textfield__input"
+          name="message"
+          type="text"
+          id="messageField"
+        />
+        <label class="mdl-textfield__label" for="messageField">Text...</label>
+      </div>
       <div>
         <button
           id="sendBtn"
@@ -46,14 +46,7 @@
           id="loadingSpinner"
         ></div>
       </div>
-    </div>
-  </fieldset>
-</form>
-
-{% else %}
-<h1>Nicht eingelogt</h1>
-<p>
-  Du bist aktuell nicht eingeloggt. Bitte logge dich ein.<br />
-  Bitte klicke <a href="/login/">hier</a>
-</p>
-{% endif %} {% endblock %}
+    </fieldset>
+  </form>
+</div>
+{% endblock %}
