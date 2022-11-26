@@ -28,10 +28,7 @@ const loadMessage = async () => {
   fd.append("message", messageField.value);
   fd.append("csrfmiddlewaretoken", getCsrfToken());
 
-  const res = await fetch("/chat/", {
-    method: "POST",
-    body: fd,
-  });
+  const res = await callPostEndpoint(fd, '/chat/');
   loadingSpinner.classList.add("hidden");
   return res;
 };

@@ -12,8 +12,13 @@
   align-items: center !important;
 }
 
+/* Flexbox */
 .d-flex {
   display: flex !important;
+}
+
+.flex-direction-column {
+  flex-direction: column;
 }
 
 .justify-content-center {
@@ -24,12 +29,17 @@
   align-items: center !important;
 }
 
+/* SPACING */
 .ml-16 {
   margin-left: 16px;
 }
 
 .mt-16 {
   margin-top: 16px;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
 }
 
 .hidden {

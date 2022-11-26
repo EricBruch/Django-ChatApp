@@ -1,43 +1,58 @@
-{% extends "base.html" %}
-{% block content %}
-
-<h1>Login</h1>
-<div>
-  <form action="/login/" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="redirect" value="{{redirect}}"/>
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input
-        class="mdl-textfield__input"
-        name="username"
-        type="text"
-        id="username"
-      />
-      <label class="mdl-textfield__label" for="username">Username</label>
-    </div>
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input
-        class="mdl-textfield__input"
-        name="password"
-        type="text"
-        id="password"
-      />
-      <label class="mdl-textfield__label" for="password">Passwort</label>
-    </div>
-    <div>
-      <button
-        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+{% extends "base.html" %} {% block content %} {% load static %}
+<script src="{% static 'js/login.js' %}"></script>
+<div class="d-flex align-items-center flex-direction-column">
+  <h1>Login</h1>
+  <div>
+    <form onsubmit="login(); return false;" id="form">
+      <fieldset
+        class="d-flex align-items-center flex-direction-column"
+        id="fieldset"
       >
-        Login
-      </button>
-    </div>
+        <input type="hidden" name="redirect" value="{{redirect}}" />
+        <div
+          class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+        >
+          <input
+            class="mdl-textfield__input"
+            name="username"
+            type="text"
+            id="username"
+          />
+          <label class="mdl-textfield__label" for="username">Username</label>
+        </div>
+        <div
+          class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+        >
+          <input
+            class="mdl-textfield__input"
+            name="password"
+            type="text"
+            id="password"
+          />
+          <label class="mdl-textfield__label" for="password">Passwort</label>
+        </div>
+        <div class="d-flex mb-16">
+          <div>
+            <button
+            id="loginBtn"
+              class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+            >
+              Login
+            </button>
+          </div>
+          <div class="ml-16" id="loadingContainer">
+            <div
+              class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active hidden"
+              id="loadingSpinner"
+            ></div>
+          </div>
+        </div>
+      </fieldset>
 
-    {% if invalidCredentials %}
-    <div>
-      <p>Credentials entered are invalid</p>
-    </div>
-    {% endif %}
-  </form>
+      <div id="invalidCredentials"></div>
+      <div id="someError"></div>
+    </form>
+  </div>
 </div>
 
 {% endblock %}

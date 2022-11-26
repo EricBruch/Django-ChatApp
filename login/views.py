@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -13,10 +14,10 @@ def login_view(request):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            print('asdasd', request.GET.get('next'))
-            return HttpResponseRedirect(request.POST['redirect'])
+            # return render(request, 'login/login.html', {'redirect': redirect})
+            return JsonResponse('{ "invalid": false }', safe=False)
         else:
-            return render(request, 'login/login.html', {'invalidCredentials': True})
+            return JsonResponse('{ "invalid": true }', safe=False)
 
     return render(request, 'login/login.html', {'redirect': redirect})
 
