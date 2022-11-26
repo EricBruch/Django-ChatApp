@@ -14,7 +14,6 @@ def login_view(request):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            # return render(request, 'login/login.html', {'redirect': redirect})
             return JsonResponse('{ "invalid": false }', safe=False)
         else:
             return JsonResponse('{ "invalid": true }', safe=False)
@@ -24,13 +23,11 @@ def login_view(request):
 
 def register_view(request):
     if request.method == 'POST':
-        username, password, passwordRepeat, email = request.POST[
-            'username'], request.POST['password'], request.POST['passwordRepeat'], request.POST['email']
+        username, password, passwordRepeat, email = request.POST['username'], request.POST['password'], request.POST['passwordRepeat'], request.POST['email']
         if password != passwordRepeat:
-            return render(request, 'register/register.html', {'notMatching': True})
-        user = User.objects.create_user(
-            username, email, password)
+            return JsonResponse('{ "notMatching": true }', safe=False)
+        user = User.objects.create_user(username, email, password)
         login(request, user)
-        return HttpResponseRedirect('/chat/')
+        return JsonResponse('{ "successful": true }', safe=False)
 
     return render(request, 'register/register.html')

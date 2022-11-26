@@ -5,7 +5,7 @@ const login = async () => {
   if (res.ok) {
     onSuccess(res);
   } else {
-    onError();
+    onWsError();
   }
 };
 
@@ -25,6 +25,8 @@ const sendLogin = async () => {
 
   const res = await callPostEndpoint(fd, "/login/");
   loadingSpinner.classList.add("hidden");
+  fieldset.disabled = false;
+  loginBtn.disabled = false;
   return res;
 };
 
@@ -39,8 +41,6 @@ const onSuccess = async (response) => {
   }
 };
 
-const onError = () => {
+const onWsError = () => {
   someError.innerHTML += `<p class="color-red">Some Error occured</p>`;
-    fieldset.disabled = false;
-    loginBtn.disabled = false;
 };
