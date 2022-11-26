@@ -4,73 +4,7 @@
 <!---->
 
 {% load static %}
-
-<!--
-  <script src="{% static 'js/shared.js' %}"></script>
-
--->
-
-<script>
-  const preliminaryAddText = (date, text) => {
-    messageContainer.innerHTML += `
-    <div id="deleteMessage">
-      <span class="color-gray">[${date}]:</span>
-      {{ request.user }}: <i class="color-gray">${text}</i>
-    </div>
-    `;
-  };
-
-  const sendMessage = async () => {
-    const fd = new FormData();
-    const token = "{{ csrf_token }}";
-    fd.append("message", messageField.value);
-    fd.append("csrfmiddlewaretoken", token);
-
-    try {
-      return await fetch("/chat/", {
-        method: "POST",
-        body: fd,
-      });
-    } catch (e) {
-      console.error("An error occured", e);
-    }
-  };
-
-  const addText = (date, text) => {
-    messageContainer.innerHTML += `
-    <div>
-      <span class="color-gray">[${date}]:</span>
-      {{ request.user }}: <i>${text}</i>
-    </div>
-    `;
-  };
-
-  const getDateString = (date) => {
-    const month = date.toLocaleDateString("en-US", { month: "short" });
-    const day = date.toLocaleDateString("en-US", { day: "numeric" });
-    const year = date.toLocaleDateString("en-US", { year: "numeric" });
-
-    return `${month}. ${day}, ${year}`;
-  };
-
-  const getLoadSpinner = () =>
-    '<div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active" id="loadingSpinner"></div>';
-
-  const saveMessage = async () => {
-    loadingSpinner.classList.remove("hidden");
-    preliminaryAddText(messageField.value, getDateString(new Date()));
-    const response = await sendMessage();
-    document.getElementById("deleteMessage").remove();
-
-    const json = JSON.parse(await response.json());
-    console.log("json", json.fields.text);
-    addText(
-      getDateString(new Date(`${json.fields.created_at}`)),
-      json.fields.text
-    );
-    loadingSpinner.classList.add("hidden");
-  };
-</script>
+<script src="{% static 'js/index.js' %}"></script>
 
 <div>
   <h2>{{ name }}</h2>

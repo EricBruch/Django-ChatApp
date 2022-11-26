@@ -16,6 +16,12 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
+    <script>
+      const getCsrfToken = () => "{{ csrf_token }}";
+    
+      const getUser = () => "{{ user }}";
+    </script>
+
     <title>Chatroom</title>
   </head>
   <body style="height: max-height: 100vh;">

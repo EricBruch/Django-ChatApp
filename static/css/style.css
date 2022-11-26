@@ -2,6 +2,10 @@
   color: rgba(0, 0, 0, 0.4);
 }
 
+.color-red {
+  color: red;
+}
+
 .mainContent {
   display: flex !important;
   justify-content: center !important;
