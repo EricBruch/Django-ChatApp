@@ -11,8 +11,10 @@ const saveMessage = async () => {
 
 const prepare = () => {
   loadingSpinner.classList.remove("hidden");
+  fieldset.disabled = true;
+  sendBtn.disabled = true;
   preliminaryAddText(getDateString(new Date()), messageField.value);
-}
+};
 
 const preliminaryAddText = (date, text) => {
   messageContainer.innerHTML += `
@@ -28,8 +30,10 @@ const loadMessage = async () => {
   fd.append("message", messageField.value);
   fd.append("csrfmiddlewaretoken", getCsrfToken());
 
-  const res = await callPostEndpoint(fd, '/chat/');
+  const res = await callPostEndpoint(fd, "/chat/");
   loadingSpinner.classList.add("hidden");
+  fieldset.disabled = false;
+  sendBtn.disabled = false;
   return res;
 };
 
