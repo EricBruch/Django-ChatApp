@@ -17,7 +17,7 @@ def index(request, id=None):
         on GET: returns the HTML view
         on POST: returns the created message
     """
-    chatId = getChatIdOrDefault(id)
+    chatId = get_chat_id_or_default(id)
     chat = Chat.objects.get(id=chatId)
 
     if request.method == 'POST':
@@ -38,6 +38,6 @@ def index(request, id=None):
     })
 
 
-def getChatIdOrDefault(id):
+def get_chat_id_or_default(id):
     myId = int(id) if id else 2
     return myId if myId > 2 and myId < 6 else 2
