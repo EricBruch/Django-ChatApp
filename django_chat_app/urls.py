@@ -14,10 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls.static import static
 from django.urls import path
 
 from chat.views import index
 from login.views import login_view, register_view
+from django_chat_app.settings import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +28,4 @@ urlpatterns = [
     path('chat/<id>/', index),
     path('login/', login_view),
     path('register/', register_view),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
