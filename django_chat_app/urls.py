@@ -19,7 +19,7 @@ from django.urls import path
 
 from chat.views import index
 from login.views import login_view, register_view
-from django_chat_app.settings import settings
+from django_chat_app.settings import STATIC_URL, STATIC_ROOT
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +28,4 @@ urlpatterns = [
     path('chat/<id>/', index),
     path('login/', login_view),
     path('register/', register_view),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] #+ static(STATIC_URL, document_root=STATIC_ROOT)
