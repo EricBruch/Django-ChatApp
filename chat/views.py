@@ -7,9 +7,17 @@ from django.core import serializers
 
 @login_required(login_url='/login/')
 def index(request, id=None):
-    """This is a view to render the chat html.
+    """Logic to display a chat to the user
+
+    Args:
+        request: the request that arrives at the controller
+        id (string, optional): The id of the chat that should be displayed to the user. Defaults to None.
+
+    Returns:
+        on GET: returns the HTML view
+        on POST: returns the created message
     """
-    chatId = getChatId(id)
+    chatId = getChatIdOrDefault(id)
     chat = Chat.objects.get(id=chatId)
 
     if request.method == 'POST':
@@ -30,6 +38,6 @@ def index(request, id=None):
     })
 
 
-def getChatId(id):
+def getChatIdOrDefault(id):
     myId = int(id) if id else 2
     return myId if myId > 2 and myId < 6 else 2
