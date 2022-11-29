@@ -3,6 +3,7 @@ from .models import Message, Chat
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.core import serializers
+from .common import get_chat_id_or_default
 
 
 @login_required(login_url='/login/')
@@ -17,27 +18,23 @@ def index(request, id=None):
         on GET: returns the HTML view
         on POST: returns the created message
     """
-    chatId = get_chat_id_or_default(id)
-    chat = Chat.objects.get(id=chatId)
-
     if request.method == 'POST':
+        myChat = Chat.objects.get(id=request.POST['chatId'])
         message = Message.objects.create(
             text=request.POST['message'],
-            chat=chat,
+            chat=myChat,
             author=request.user,
             receiver=request.user
         )
         serialized_obj = serializers.serialize('json', [message])
         return JsonResponse(serialized_obj[1:-1], safe=False)
 
-    chatMessages = Message.objects.filter(chat__id=chatId)
+
+    myChat = Chat.objects.get(id=get_chat_id_or_default(id))
+    chatMessages = Message.objects.filter(chat__id=myChat.pk)
     return render(request, 'chat/index.html', {
         'messages': chatMessages,
-        'name': chat.name,
-        'created': chat.created_at
+        'name': myChat.name,
+        'created': myChat.created_at,
+        'chatId': myChat.pk,
     })
-
-
-def get_chat_id_or_default(id):
-    myId = int(id) if id else 2
-    return myId if myId > 2 and myId < 6 else 2

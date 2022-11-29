@@ -29,6 +29,8 @@ const loadMessage = async () => {
   const fd = new FormData();
   fd.append("message", messageField.value);
   fd.append("csrfmiddlewaretoken", getCsrfToken());
+  const asdf = getChatId();
+  fd.append("chatId", getChatId());
 
   const res = await callPostEndpoint(fd, "/chat/");
   loadingSpinner.classList.add("hidden");

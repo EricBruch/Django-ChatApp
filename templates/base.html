@@ -19,8 +19,10 @@
     <script src="{% static 'js/shared.js' %}"></script>
     <script>
       const getCsrfToken = () => "{{ csrf_token }}";
-    
+
       const getUser = () => "{{ user }}";
+
+      const getChatId = () => +"{{ chatId }}";
     </script>
 
     <title>Chatroom</title>
@@ -62,7 +64,6 @@
 
       <footer class="mdl-mini-footer mt-16">
         <div class="mdl-mini-footer__left-section">
-          <div class="mdl-logo">Footer</div>
           <ul class="mdl-mini-footer__link-list">
             <li><a href="/login/">Login</a></li>
             <li><a href="/register/">Register</a></li>
